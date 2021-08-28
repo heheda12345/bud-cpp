@@ -84,6 +84,7 @@ TEST(TimerTest, StartLog) {
 
     std::stringstream ss;
     ss << t_micro;
-    EXPECT_THAT(ss.str(), MatchesRegex("[0-9] iters.*, avg = [\\.0-9]+, min = "
-                                       "[\\.0-9]+, max = [\\.0-9]+"));
+    EXPECT_THAT(ss.str(),
+                MatchesRegex("[0-9] iters.*, avg = [\\.0-9]+ us, min = "
+                             "[\\.0-9]+ us, max = [\\.0-9]+ us"));
 }

@@ -17,6 +17,22 @@ struct second_param<C<T1, T2, Ts...>> {
 };
 
 template <class T>
+std::string dur_to_str() {
+    return "?";
+}
+
+#define DECL_DUR_TO_STR(DUR_TYPE, str)   \
+    template <>                          \
+    std::string dur_to_str<DUR_TYPE>() { \
+        return str;                      \
+    }
+
+DECL_DUR_TO_STR(std::chrono::nanoseconds, "ns")
+DECL_DUR_TO_STR(std::chrono::microseconds, "us")
+DECL_DUR_TO_STR(std::chrono::milliseconds, "ms")
+DECL_DUR_TO_STR(std::chrono::seconds, "s")
+
+template <class T>
 class Timer {
  public:
     Timer() { clear(); }
@@ -69,7 +85,9 @@ class Timer {
 
 template <class T>
 inline std::ostream& operator<<(std::ostream& os, const Timer<T>& timer) {
-    os << timer.get_cnt() << " iters, avg = " << timer.get_avg()
-       << ", min = " << timer.get_min() << ", max = " << timer.get_max();
+    os << timer.get_cnt() << " iters, avg = " << timer.get_avg() << " "
+       << dur_to_str<T>() << ", min = " << timer.get_min() << " "
+       << dur_to_str<T>() << ", max = " << timer.get_max() << " "
+       << dur_to_str<T>();
     return os;
 }
