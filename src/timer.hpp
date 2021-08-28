@@ -21,10 +21,8 @@ class Timer {
  public:
     Timer() { clear(); }
 
-    using Duration =
-        decltype(std::chrono::duration_cast<std::chrono::nanoseconds>(
-            std::chrono::system_clock::now() -
-            std::chrono::system_clock::now()));
+    using Duration = decltype((std::chrono::system_clock::now() -
+                               std::chrono::system_clock::now()));
 
     void clear() {
         this->mn = std::numeric_limits<Duration>::max();
@@ -59,7 +57,9 @@ class Timer {
     std::chrono::time_point<std::chrono::system_clock> start_time;
 
     static float cast(Duration d) {
-        return (d * 1e-9).count() * second_param<T>::type::den /
-               second_param<T>::type::num;
+        return (d * 1.0 * second_param<Duration>::type::num /
+                second_param<Duration>::type::den)
+                   .count() *
+               second_param<T>::type::den / second_param<T>::type::num;
     }
 };
