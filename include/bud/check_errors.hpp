@@ -1,7 +1,6 @@
 #pragma once
-#ifdef USE_CUDA
-#include <cublas_v2.h>
-#include <cuda.h>
+#include <cstdio>
+#include <cstdlib>
 
 #define UNREACHABLE()                                                  \
     {                                                                  \
@@ -9,6 +8,10 @@
         fflush(stdout);                                                \
         exit(1);                                                       \
     }
+
+#ifdef USE_CUDA
+#include <cublas_v2.h>
+#include <cuda_runtime_api.h>
 
 #define checkCudaErrors(stmt)                                                 \
     {                                                                         \
