@@ -18,12 +18,10 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 
 enable_testing()
 
-add_executable(hello_test test/hello.cc)
-target_link_libraries(hello_test gtest_main gmock_main)
-
-add_executable(timer_test test/timer.cc)
-target_link_libraries(timer_test gtest_main gmock_main)
-
 include(GoogleTest)
-gtest_discover_tests(hello_test)
-gtest_discover_tests(timer_test)
+
+AUX_SOURCE_DIRECTORY(test all_test_file)
+add_executable(all_tests ${all_test_file})
+target_link_libraries(all_tests gtest_main gmock_main)
+
+gtest_discover_tests(all_tests)
