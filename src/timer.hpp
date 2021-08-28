@@ -25,7 +25,7 @@ class Timer {
                                std::chrono::system_clock::now()));
 
     void clear() {
-        this->mn = std::numeric_limits<Duration>::max();
+        this->mn = Duration::max();
         this->mx = this->sum = Duration::zero();
         this->cnt = 0;
     }
@@ -38,12 +38,15 @@ class Timer {
     }
 
     void log() {
-        Duration duration = end();
+        auto end_time = std::chrono::system_clock::now();
+        Duration duration = end_time - this->start_time;
         this->mn = std::min(this->mn, duration);
         this->mx = std::max(this->mx, duration);
         this->sum += duration;
         this->cnt += 1;
     }
+
+    void report() const { std::cout << *this << std::endl; }
 
     float get_min() const { return cast(mn); }
     float get_max() const { return cast(mx); }
@@ -63,3 +66,10 @@ class Timer {
                second_param<T>::type::den / second_param<T>::type::num;
     }
 };
+
+template <class T>
+inline std::ostream& operator<<(std::ostream& os, const Timer<T>& timer) {
+    os << timer.get_cnt() << " iters, avg = " << timer.get_avg()
+       << ", min = " << timer.get_min() << ", max = " << timer.get_max();
+    return os;
+}
