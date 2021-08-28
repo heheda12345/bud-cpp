@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(bud)
 
 # GoogleTest requires at least C++11
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -15,7 +15,16 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+include_directories(${PROJECT_SOURCE_DIR}/src)
+
 enable_testing()
 
-add_executable(hello_test test/hello_test.cc)
+add_executable(hello_test test/hello.cc)
 target_link_libraries(hello_test gtest_main)
+
+add_executable(timer_test test/timer.cc)
+target_link_libraries(timer_test gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(hello_test)
+gtest_discover_tests(timer_test)
